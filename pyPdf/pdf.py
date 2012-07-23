@@ -798,6 +798,11 @@ class PdfFileReader(object):
                             di = convertToInt(d, entrySizes[i])
                             if i == 0:
                                 xref_type = di
+                                # PDF spec: If the first element is zero, the
+                                # type field is not present, and it defaults
+                                # to type 1.
+                                if (0 == xref_type) and (0 == entrySizes[0]):
+                                    xref_type = 1
                             elif i == 1:
                                 if xref_type == 0:
                                     next_free_object = di
